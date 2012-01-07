@@ -5,6 +5,7 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Key;
 import com.google.inject.multibindings.Multibinder;
 import org.jvnet.hudson.annotation_indexer.Index;
+import org.jvnet.hudson.annotation_indexer.Indexed;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -43,8 +44,14 @@ public class ExtensionFinder extends AbstractModule {
             }
 
             // find all extensions
-            for (Class c : Index.list(Extension.class, cl, Class.class)) {
-                bind(c,c,binders.get(c));
+            Set<Class> seen = new HashSet<Class>();
+            for (Class<?> a : Index.list(ExtensionImplementation.class, cl, Class.class)) {
+                if (!a.isAnnotationPresent(Indexed.class))
+                    throw new AssertionError(a+" has @ExtensionImplementation but not @Indexed");
+                for (Class c : Index.list(a.asSubclass(Annotation.class), cl, Class.class)) {
+                    if (seen.add(c))    // ... so that we don't bind the same class twice
+                        bind(c,c,binders.get(c));
+                }
             }
         } catch (IOException e) {
             throw new Error(e); // fatal problem

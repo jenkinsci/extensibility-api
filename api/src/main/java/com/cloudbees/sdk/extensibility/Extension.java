@@ -16,5 +16,6 @@ import static java.lang.annotation.RetentionPolicy.*;
 @Retention(RUNTIME)
 @Target(TYPE)
 @Indexed
+@ExtensionImplementation
 public @interface Extension {
 }
