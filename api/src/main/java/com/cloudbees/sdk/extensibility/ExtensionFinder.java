@@ -56,7 +56,7 @@ public class ExtensionFinder extends AbstractModule {
         if (bindingAnnotation==null)
            // this is just to make it unique among others that implement the same contract
             bindingAnnotation = AnnotationLiteral.of(Named.class,impl.getName());
-        bind(Key.get(extensionPoint,bindingAnnotation)).to(impl);
+        binder().withSource(impl).bind(Key.get(extensionPoint,bindingAnnotation)).to(impl);
         bind(impl);
     }
 
