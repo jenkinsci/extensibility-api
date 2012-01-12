@@ -3,6 +3,7 @@ package com.cloudbees.sdk.extensibility;
 import com.google.inject.AbstractModule;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Key;
+import com.google.inject.Module;
 import org.jvnet.hudson.annotation_indexer.Index;
 import org.jvnet.hudson.annotation_indexer.Indexed;
 
@@ -14,6 +15,8 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
+ * Guice {@link Module} that discovers {@link ExtensionPoint} implementations and registers them as binding.
+ * 
  * @author Kohsuke Kawaguchi
  */
 public class ExtensionFinder extends AbstractModule {

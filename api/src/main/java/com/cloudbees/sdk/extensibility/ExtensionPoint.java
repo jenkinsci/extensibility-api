@@ -9,6 +9,8 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
 /**
+ * Marks types that are the extension point, a contract type to be implemented by subtypes.
+ *
  * @author Kohsuke Kawaguchi
  */
 @Retention(RUNTIME)
