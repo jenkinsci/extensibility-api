@@ -8,10 +8,19 @@ import java.util.Map;
 
 /**
  * Factory for annotation objects.
+ * 
+ * Using Guice often requires one to create instances of {@link Annotation} subtypes
+ * with values that are only determined at runtime.
+ *
+ * This factory helps you do that.
  *
  * @author Kohsuke Kawaguchi
  */
 public class AnnotationLiteral {
+    public static <T extends Annotation> T of(Class<T> type) {
+        return of(type,Collections.emptyMap());
+    }
+
     public static <T extends Annotation> T of(Class<T> type, Object value) {
         return of(type,"value",value);
     }
