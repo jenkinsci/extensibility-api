@@ -8,7 +8,6 @@ import com.google.inject.TypeLiteral;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -30,11 +29,20 @@ import java.util.Map.Entry;
  */
 @Singleton
 public class ExtensionPointList<T> {
-    @Inject
-    TypeLiteral<T> type;
+    private final TypeLiteral<T> type;
 
     // TODO: if we can inject this like we inject Logger, then
     // we don't need to take injector as a parameter
+
+    @Inject
+    public ExtensionPointList(TypeLiteral<T> type) {
+        this.type = type;
+    }
+
+    public ExtensionPointList(Class<T> type) {
+        this(TypeLiteral.get(type));
+    }
+
 
     public List<T> list(Injector injector) {
         List<T> r = new ArrayList<T>();
