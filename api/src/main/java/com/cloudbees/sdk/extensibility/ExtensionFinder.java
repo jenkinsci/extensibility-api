@@ -19,6 +19,10 @@ import java.util.logging.Logger;
 public class ExtensionFinder extends AbstractModule {
     private final ClassLoader cl;
 
+    /**
+     * @param cl
+     *      ClassLoader to find extensions from.
+     */
     public ExtensionFinder(ClassLoader cl) {
         this.cl = cl;
     }
