@@ -8,6 +8,7 @@ import com.google.inject.TypeLiteral;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -28,8 +29,11 @@ import java.util.Map.Entry;
  * @author Kohsuke Kawaguchi
  */
 @Singleton
-public class ExtensionPointList<T> {
+public class ExtensionPointList<T> implements Iterable<T> {
     private final TypeLiteral<T> type;
+
+    @Inject
+    private Injector injector;
 
     // TODO: if we can inject this like we inject Logger, then
     // we don't need to take injector as a parameter
@@ -43,7 +47,19 @@ public class ExtensionPointList<T> {
         this(TypeLiteral.get(type));
     }
 
+    /**
+     * If {@link ExtensionPointList} is injected, then it can be used as
+     * {@link Iterable} to list up extensions that are found in that injector.
+     */
+    public Iterator<T> iterator() {
+        if (injector==null)
+            throw new IllegalArgumentException();
+        return list(injector).iterator();
+    }
 
+    /**
+     * Returns all the extension implementations in the specified injector.
+     */
     public List<T> list(Injector injector) {
         List<T> r = new ArrayList<T>();
 
