@@ -1,17 +1,29 @@
 package com.cloudbees.sdk.extensibility;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Binding;
 import com.google.inject.BindingAnnotation;
+import com.google.inject.Injector;
 import com.google.inject.Key;
 
 import javax.inject.Named;
 import java.lang.annotation.Annotation;
 
 /**
+ * Responsible for producing {@link Binding}s inside {@link Injector}
+ * from a discovered extension.
+ *
  * @author Kohsuke Kawaguchi
+ * @see ExtensionPoint
  */
 public abstract class ExtensionLoaderModule<T> extends AbstractModule {
+    /**
+     * The type of the extension implementation discovered.
+     */
     protected Class<? extends T> impl;
+    /**
+     * The type of the extension point.
+     */
     protected Class<T> extensionPoint;
 
     /**
@@ -22,6 +34,32 @@ public abstract class ExtensionLoaderModule<T> extends AbstractModule {
         this.extensionPoint = extensionPoint;
     }
 
+    /**
+     * The default implementation of {@link ExtensionLoaderModule}.
+     *
+     * If the discovered implementation has any {@linkplain BindingAnnotation binding annotation},
+     * that is used as the key. This allows an extension point that supports named lookup, such as:
+     *
+     * <pre>
+     * &#64;Retention(RUNTIME)
+     * &#64;Target(TYPE)
+     * &#64;Indexed
+     * &#64;BindingAnnotation
+     * &#64;ExtensionImplementation
+     * public @interface CLICommand {
+     *     String value();
+     * }
+     *
+     * &#64;CLICommand("acme")
+     * public class AcmeCommand extends Command { ... }
+     *
+     * // then somewhere else
+     * Command cmd = injector.getBinding(Key.get(Command.class,AnnotationLiteral.of(CLICommand.class,"acme"))
+     * </pre>
+     *
+     * If no binding annotation is present, this implementation creates a unique binding
+     * annotation, so that at least it can be looked up via {@link ExtensionPointList}.
+     */
     static class Default<T> extends ExtensionLoaderModule<T> {
         @Override
         protected void configure() {
