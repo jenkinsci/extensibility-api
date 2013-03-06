@@ -17,4 +17,5 @@ import static java.lang.annotation.RetentionPolicy.*;
 @Target(TYPE)
 @Indexed
 public @interface ExtensionPoint {
+    Class<? extends ExtensionLoaderModule> loader() default ExtensionLoaderModule.Default.class;
 }

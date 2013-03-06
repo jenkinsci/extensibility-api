@@ -55,19 +55,29 @@ public class ExtensionFinder extends AbstractModule {
      * Allows the subtype to be selective about what to bind.
      */
     protected <T> void bind(Class<? extends T> impl, Class<T> extensionPoint) {
-        Annotation bindingAnnotation = findBindingAnnotation(impl);
-        if (bindingAnnotation==null)
-           // this is just to make it unique among others that implement the same contract
-            bindingAnnotation = AnnotationLiteral.of(Named.class,impl.getName());
-        binder().withSource(impl).bind(Key.get(extensionPoint,bindingAnnotation)).to(impl);
-        bind(impl);
+        ExtensionLoaderModule<T> lm = createLoaderModule(extensionPoint);
+        lm.init(impl,extensionPoint);
+        install(lm);
     }
 
-    private <T> Annotation findBindingAnnotation(Class<? extends T> impl) {
-        for (Annotation a : impl.getAnnotations())
-            if (a.annotationType().isAnnotationPresent(BindingAnnotation.class))
-                return a;
-        return null;
+    /**
+     * Creates a new instance of {@link ExtensionLoaderModule} to be used to
+     * load the extension of the given type.
+     */
+    protected  <T> ExtensionLoaderModule<T> createLoaderModule(Class<T> extensionPoint) {
+        ExtensionPoint ep = extensionPoint.getAnnotation(ExtensionPoint.class);
+        if (ep!=null) {
+            if (ep.loader()!=ExtensionLoaderModule.Default.class) {
+                try {
+                    return (ExtensionLoaderModule)ep.loader().newInstance();
+                } catch (InstantiationException e) {
+                    throw (Error)new InstantiationError().initCause(e);
+                } catch (IllegalAccessException e) {
+                    throw (Error)new IllegalAccessError().initCause(e);
+                }
+            }
+        }
+        return new ExtensionLoaderModule.Default<T>();
     }
 
     /**
