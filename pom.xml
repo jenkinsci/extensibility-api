@@ -3,8 +3,8 @@
 
   <parent>
     <groupId>com.cloudbees</groupId>
-    <artifactId>cloudbees-internal-parent</artifactId>
-    <version>5</version>
+    <artifactId>cloudbees-oss-parent</artifactId>
+    <version>2</version>
   </parent>
   <artifactId>extensibility</artifactId>
   <version>1.2-SNAPSHOT</version>
@@ -31,7 +31,8 @@
   </dependencies>
 
   <scm>
-    <developerConnection>scm:git:ssh://git@git.cloudbees.com/cloudbees/extensibility-api.git</developerConnection>
-    <connection>scm:git:ssh://git@git.cloudbees.com/cloudbees/extensibility-api.git</connection>
+    <connection>scm:git:git://github.com/cloudbees/extensibility-api.git</connection>
+    <developerConnection>scm:git:git@github.com:cloudbees/extensibility-api.git</developerConnection>
+    <url>http://github.com/cloudbees/extensibility-api</url>
   </scm>
 </project>
