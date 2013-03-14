@@ -24,9 +24,21 @@
       <version>1.2</version>
     </dependency>
     <dependency>
+      <!--
+        we use this instead of stock Guice because many of our
+        use cases involves in adding Aether, which requires
+        this customized version of Guice.
+      -->
       <groupId>org.sonatype.sisu</groupId>
       <artifactId>sisu-inject-plexus</artifactId>
       <version>2.3.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.9</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
