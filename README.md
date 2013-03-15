@@ -5,6 +5,7 @@ to reuse code between them and enable extensibility by 3rd parties.
 This library adds basic idiom for defining an extension point and letting other plugins
 implement their extensions. (Note that if your extension point can only allow one implementation and not multiple implementations, then the standard Guice binding mechanism should be suffice.) Such idiom enables plugins to be developed by unrelated people and still work together at runtime.
 
+For a demonstration of the features of ths library, see [the demo repository](https://github.com/cloudbees/extensibility-api-demo)
 
 ## Defining Extension Point
 An extension point is an interface/abstract class that represents a contract. I recommend abstract classes where you need to be able to evolve the contract without breaking implementations.
