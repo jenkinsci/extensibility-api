@@ -18,6 +18,7 @@ package com.cloudbees.sdk.extensibility;
 
 import com.google.inject.TypeLiteral;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
@@ -28,6 +29,7 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class ExtensionPointList<T> extends ExtensionList<T>  {
+    @Inject
     public ExtensionPointList(TypeLiteral<T> type) {
         super(type);
     }
