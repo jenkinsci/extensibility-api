@@ -19,6 +19,9 @@ package com.cloudbees.sdk.extensibility;
 import com.google.common.collect.Iterables;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
+
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -40,4 +43,14 @@ public class AnimalTest {
         assertTrue((a[0] instanceof Dog && a[1] instanceof Cat)
                 || (a[1] instanceof Dog && a[0] instanceof Cat));
     }
+
+    /**
+     * Make sure we also bind javax.inject.Qualifier annotations
+     */
+    @Test
+    public void javaxInjectBinding() {
+        Injector i = Guice.createInjector(new ExtensionFinder(getClass().getClassLoader()));
+        assertTrue (i.getInstance(Key.get(Animal.class, Names.named("dog"))) instanceof Dog);
+    }
+
 }

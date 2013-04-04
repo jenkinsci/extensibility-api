@@ -21,6 +21,7 @@ import com.google.inject.Binding;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import com.google.inject.internal.Annotations;
 
 import javax.inject.Named;
 import java.lang.annotation.Annotation;
@@ -89,7 +90,7 @@ public abstract class ExtensionLoaderModule<T> extends AbstractModule {
 
         private <T> Annotation findBindingAnnotation(Class<? extends T> impl) {
             for (Annotation a : impl.getAnnotations())
-                if (a.annotationType().isAnnotationPresent(BindingAnnotation.class))
+                if (Annotations.isBindingAnnotation(a.annotationType()))
                     return a;
             return null;
         }
