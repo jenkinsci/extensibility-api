@@ -16,10 +16,13 @@
 
 package com.cloudbees.sdk.extensibility;
 
+import javax.inject.Named;
+
 /**
  * @author Kohsuke Kawaguchi
  */
 @Extension
+@Named("cat")
 public class Cat extends Animal {
     @Override
     public String bark() {
