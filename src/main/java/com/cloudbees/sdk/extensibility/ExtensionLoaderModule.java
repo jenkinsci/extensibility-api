@@ -21,9 +21,9 @@ import com.google.inject.Binding;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-import com.google.inject.internal.Annotations;
 
 import javax.inject.Named;
+import javax.inject.Qualifier;
 import java.lang.annotation.Annotation;
 
 /**
@@ -80,18 +80,21 @@ public abstract class ExtensionLoaderModule<T> extends AbstractModule {
     static class Default<T> extends ExtensionLoaderModule<T> {
         @Override
         protected void configure() {
-            Annotation bindingAnnotation = findBindingAnnotation(impl);
-            if (bindingAnnotation==null)
+            Annotation qa = findQualifierAnnotation(impl);
+            if (qa==null)
                // this is just to make it unique among others that implement the same contract
-                bindingAnnotation = AnnotationLiteral.of(Named.class,impl.getName());
-            binder().withSource(impl).bind(Key.get(extensionPoint, bindingAnnotation)).to(impl);
+                qa = AnnotationLiteral.of(Named.class,impl.getName());
+            binder().withSource(impl).bind(Key.get(extensionPoint, qa)).to(impl);
             bind(impl);
         }
 
-        private <T> Annotation findBindingAnnotation(Class<? extends T> impl) {
-            for (Annotation a : impl.getAnnotations())
-                if (Annotations.isBindingAnnotation(a.annotationType()))
+        private <T> Annotation findQualifierAnnotation(Class<? extends T> impl) {
+            for (Annotation a : impl.getAnnotations()) {
+                Class<? extends Annotation> at = a.annotationType();
+                if (at.isAnnotationPresent(Qualifier.class)
+                 || at.isAnnotationPresent(BindingAnnotation.class))
                     return a;
+            }
             return null;
         }
     }
