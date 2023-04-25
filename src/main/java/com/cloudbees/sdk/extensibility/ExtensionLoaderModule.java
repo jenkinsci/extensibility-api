@@ -21,10 +21,9 @@ import com.google.inject.Binding;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Injector;
 import com.google.inject.Key;
-
+import java.lang.annotation.Annotation;
 import javax.inject.Named;
 import javax.inject.Qualifier;
-import java.lang.annotation.Annotation;
 
 /**
  * Responsible for producing {@link Binding}s inside {@link Injector}
@@ -53,7 +52,7 @@ public abstract class ExtensionLoaderModule<T> extends AbstractModule {
 
     /**
      * The default implementation of {@link ExtensionLoaderModule}.
-     *
+     * <p>
      * If the discovered implementation has any {@linkplain BindingAnnotation binding annotation},
      * that is used as the key. This allows an extension point that supports named lookup, such as:
      *
@@ -81,9 +80,10 @@ public abstract class ExtensionLoaderModule<T> extends AbstractModule {
         @Override
         protected void configure() {
             Annotation qa = findQualifierAnnotation(impl);
-            if (qa==null)
-               // this is just to make it unique among others that implement the same contract
-                qa = AnnotationLiteral.of(Named.class,impl.getName());
+            if (qa == null) {
+                // this is just to make it unique among others that implement the same contract
+                qa = AnnotationLiteral.of(Named.class, impl.getName());
+            }
             binder().withSource(impl).bind(Key.get(extensionPoint, qa)).to(impl);
             bind(impl);
         }
@@ -91,9 +91,9 @@ public abstract class ExtensionLoaderModule<T> extends AbstractModule {
         private <T> Annotation findQualifierAnnotation(Class<? extends T> impl) {
             for (Annotation a : impl.getAnnotations()) {
                 Class<? extends Annotation> at = a.annotationType();
-                if (at.isAnnotationPresent(Qualifier.class)
-                 || at.isAnnotationPresent(BindingAnnotation.class))
+                if (at.isAnnotationPresent(Qualifier.class) || at.isAnnotationPresent(BindingAnnotation.class)) {
                     return a;
+                }
             }
             return null;
         }

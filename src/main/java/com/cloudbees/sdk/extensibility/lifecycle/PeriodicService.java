@@ -28,17 +28,22 @@ import java.util.logging.Logger;
  * @author Kohsuke Kawaguchi
  */
 public abstract class PeriodicService implements Startable {
+    @Override
     public void start() throws Exception {
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    PeriodicService.this.doRun();
-                } catch (Throwable e) {
-                    LOGGER.log(Level.SEVERE, "Periodic task failed", e);
-                }
-            }
-        }, getInitialDelay(), getPeriod());
+        new Timer()
+                .schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                try {
+                                    PeriodicService.this.doRun();
+                                } catch (Throwable e) {
+                                    LOGGER.log(Level.SEVERE, "Periodic task failed", e);
+                                }
+                            }
+                        },
+                        getInitialDelay(),
+                        getPeriod());
     }
 
     /**
@@ -54,7 +59,7 @@ public abstract class PeriodicService implements Startable {
      * @throws Exception
      */
     public void doRun() throws Exception {
-        if (inProgress.compareAndSet(false,true)) {
+        if (inProgress.compareAndSet(false, true)) {
             try {
                 run();
             } finally {
@@ -78,5 +83,4 @@ public abstract class PeriodicService implements Startable {
     }
 
     private static final Logger LOGGER = Logger.getLogger(PeriodicService.class.getName());
-
 }

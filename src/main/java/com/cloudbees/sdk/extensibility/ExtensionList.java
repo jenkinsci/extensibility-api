@@ -20,13 +20,12 @@ import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * A component you can inject (via JIT binding) to discover the list of
@@ -67,9 +66,11 @@ public class ExtensionList<T> implements Iterable<T> {
      * If {@link ExtensionList} is injected, then it can be used as
      * {@link Iterable} to list up extensions that are found in that injector.
      */
+    @Override
     public Iterator<T> iterator() {
-        if (injector==null)
+        if (injector == null) {
             throw new IllegalArgumentException();
+        }
         return list(injector).iterator();
     }
 
@@ -77,12 +78,13 @@ public class ExtensionList<T> implements Iterable<T> {
      * Returns all the extension implementations in the specified injector.
      */
     public List<T> list(Injector injector) {
-        List<T> r = new ArrayList<T>();
+        List<T> r = new ArrayList<>();
 
-        for (Injector i= injector; i!=null; i=i.getParent()) {
+        for (Injector i = injector; i != null; i = i.getParent()) {
             for (Entry<Key<?>, Binding<?>> e : i.getBindings().entrySet()) {
-                if (e.getKey().getTypeLiteral().equals(type))
-                    r.add((T)e.getValue().getProvider().get());
+                if (e.getKey().getTypeLiteral().equals(type)) {
+                    r.add((T) e.getValue().getProvider().get());
+                }
             }
         }
         return r;

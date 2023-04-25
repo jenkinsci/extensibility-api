@@ -3,7 +3,7 @@ CloudBees uses Guice as a foundation for our tools and runtime services
 to reuse code between them and enable extensibility by 3rd parties.
 
 This library adds basic idiom for defining an extension point and letting other plugins
-implement their extensions. (Note that if your extension point can only allow one implementation and not multiple implementations, then the standard Guice binding mechanism should be suffice.) Such idiom enables plugins to be developed by unrelated people and still work together at runtime.
+implement their extensions. (Note that if your extension point can only allow one implementation and not multiple implementations, then the standard Guice binding mechanism should suffice.) Such idiom enables plugins to be developed by unrelated people and still work together at runtime.
 
 For a demonstration of the features of ths library, see [the demo repository](https://github.com/cloudbees/extensibility-api-demo)
 
@@ -31,7 +31,7 @@ An extension is a concrete implementation of an extension point. It needs to ext
 Such a class can exist anywhere, and in fact often lives in separate Maven modules.
 
 ## Discovering Extensions
-An easiest way to discover extension implementations is to inject `ExtensionList` where it's needed.
+The easiest way to discover extension implementations is to inject `ExtensionList` where it's needed.
 
     public class AnimalTest {
         @Inject
