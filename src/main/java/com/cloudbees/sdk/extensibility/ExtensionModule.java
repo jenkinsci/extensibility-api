@@ -40,9 +40,9 @@ import com.google.inject.Module;
  *
  * @author Kohsuke Kawaguchi
  */
-@ExtensionPoint(loader=ExtensionModule.Loader.class)
+@ExtensionPoint(loader = ExtensionModule.Loader.class)
 public interface ExtensionModule extends Module {
-    public static class Loader extends ExtensionLoaderModule<ExtensionModule> {
+    class Loader extends ExtensionLoaderModule<ExtensionModule> {
         @Override
         protected void configure() {
             try {

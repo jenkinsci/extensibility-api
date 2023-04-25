@@ -20,7 +20,7 @@ import com.cloudbees.sdk.extensibility.ExtensionPoint;
 
 /**
  * Callback that gets invoked when the Guice world starts running.
- *
+ * <p>
  * It's the responsibility of the code that creates an injector to invoke them.
  *
  * @author Kohsuke Kawaguchi
@@ -30,7 +30,7 @@ public interface Startable {
     /**
      * Called once right after the Guice world is started, to provide an opportunity to start
      * various objects.
-     *
+     * <p>
      * Exceptions thrown will terminate the system.
      */
     void start() throws Exception;

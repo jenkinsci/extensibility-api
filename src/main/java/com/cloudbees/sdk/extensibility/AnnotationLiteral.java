@@ -18,28 +18,27 @@ package com.cloudbees.sdk.extensibility;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * Factory for annotation objects.
- * 
+ * <p>
  * Using Guice often requires one to create instances of {@link Annotation} subtypes
  * with values that are only determined at runtime.
- *
+ * <p>
  * This factory helps you do that.
  *
  * @author Kohsuke Kawaguchi
  */
 public class AnnotationLiteral {
     public static <T extends Annotation> T of(Class<T> type) {
-        return of(type,Collections.emptyMap());
+        return of(type, Collections.emptyMap());
     }
 
     public static <T extends Annotation> T of(Class<T> type, Object value) {
-        return of(type,"value",value);
+        return of(type, "value", value);
     }
 
     public static <T extends Annotation> T of(Class<T> type, String key, Object value) {
-        return of(type, Collections.singletonMap(key,value));
+        return of(type, Collections.singletonMap(key, value));
     }
 }
