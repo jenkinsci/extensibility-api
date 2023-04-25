@@ -17,7 +17,10 @@
 package com.cloudbees.sdk.extensibility;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Proxy;
 import java.util.Collections;
+import java.util.Map;
+import org.apache.commons.lang3.AnnotationUtils;
 
 /**
  * Factory for annotation objects.
@@ -40,5 +43,27 @@ public class AnnotationLiteral {
 
     public static <T extends Annotation> T of(Class<T> type, String key, Object value) {
         return of(type, Collections.singletonMap(key, value));
+    }
+
+    public static <T extends Annotation> T of(Class<T> type, final Map<String, Object> values) {
+        return type.cast(Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] {type}, (proxy, method, args) -> {
+            Annotation annotation = (Annotation) proxy;
+            String methodName = method.getName();
+            switch (methodName) {
+                case "equals":
+                    return AnnotationUtils.equals(annotation, (Annotation) args[0]);
+                case "toString":
+                    return AnnotationUtils.toString(annotation);
+                case "hashCode":
+                    return AnnotationUtils.hashCode(annotation);
+                case "annotationType":
+                    return type;
+                default:
+                    if (!values.containsKey(methodName)) {
+                        throw new NoSuchMethodException("Missing value for annotation key: " + methodName);
+                    }
+                    return values.get(methodName);
+            }
+        }));
     }
 }
