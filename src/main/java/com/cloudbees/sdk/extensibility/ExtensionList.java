@@ -34,7 +34,7 @@ import java.util.Map.Entry;
  *
  * <pre>
  * &#64;Inject
- * ExtensionList&lt;Foo> foos;
+ * ExtensionList&lt;Foo&gt; foos;
  *
  * void someFunction(){
  *     for (Foo f : foos) {
