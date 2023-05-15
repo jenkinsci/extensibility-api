@@ -6,6 +6,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # Starting with 7.x, Guice switches from javax.* to jakarta.* bindings.
+      # See https://github.com/google/guice/wiki/Guice700
+      - dependency-name: "com.google.inject:guice-bom"
+        versions: [">=7.0.0"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
