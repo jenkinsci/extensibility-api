@@ -16,7 +16,7 @@
 
 package com.cloudbees.sdk.extensibility;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 /**
  * @author Kohsuke Kawaguchi

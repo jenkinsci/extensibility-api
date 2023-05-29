@@ -17,8 +17,8 @@
 package com.cloudbees.sdk.extensibility;
 
 import com.google.inject.TypeLiteral;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
 /**
  * Please use {@link ExtensionList}.

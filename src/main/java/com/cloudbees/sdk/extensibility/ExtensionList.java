@@ -20,12 +20,12 @@ import com.google.inject.Binding;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * A component you can inject (via JIT binding) to discover the list of
