@@ -23,7 +23,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.junit.Test;
 
 /**
@@ -42,10 +42,10 @@ public class AnimalTest {
     }
 
     /**
-     * Make sure we also bind javax.inject.Qualifier annotations
+     * Make sure we also bind jakarta.inject.Qualifier annotations
      */
     @Test
-    public void javaxInjectBinding() {
+    public void jakartaInjectBinding() {
         Injector i = Guice.createInjector(new ExtensionFinder(getClass().getClassLoader()));
         assertTrue(i.getInstance(Key.get(Animal.class, Names.named("dog"))) instanceof Dog);
     }

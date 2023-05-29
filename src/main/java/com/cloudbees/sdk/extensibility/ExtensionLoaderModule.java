@@ -21,9 +21,9 @@ import com.google.inject.Binding;
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import jakarta.inject.Named;
+import jakarta.inject.Qualifier;
 import java.lang.annotation.Annotation;
-import javax.inject.Named;
-import javax.inject.Qualifier;
 
 /**
  * Responsible for producing {@link Binding}s inside {@link Injector}

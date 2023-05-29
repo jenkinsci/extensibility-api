@@ -19,7 +19,7 @@ package com.cloudbees.sdk.extensibility;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 import org.junit.Test;
 
 /**
@@ -29,7 +29,7 @@ public class AnnotationLiteralTest {
     @Test
     public void smokes() {
         Named a = AnnotationLiteral.of(Named.class, "cat");
-        assertEquals("@javax.inject.Named(value=cat)", a.toString());
+        assertEquals("@jakarta.inject.Named(value=cat)", a.toString());
         assertEquals(Named.class, a.annotationType());
 
         Named cat = Cat.class.getAnnotation(Named.class);
