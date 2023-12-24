@@ -35,6 +35,12 @@
     <revision>1.8</revision>
     <changelist>-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/${project.artifactId}-api</gitHubRepo>
+    <!-- TODO: Remove when parent pom is using this version or newer -->
+    <!-- https://github.com/jenkinsci/pom/pull/510 -->
+    <spotbugs-maven-plugin.version>4.8.2.0</spotbugs-maven-plugin.version>
+    <!-- TODO: Remove when parent pom includes this configuration -->
+    <!-- https://github.com/jenkinsci/pom/pull/510 -->
+    <spotbugs.omitVisitors>FindReturnRef,ConstructorThrow</spotbugs.omitVisitors>
     <spotless.check.skip>false</spotless.check.skip>
   </properties>
 
