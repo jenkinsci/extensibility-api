@@ -19,6 +19,9 @@ package com.cloudbees.sdk.extensibility;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Marks {@link Module}s to be loaded when the world is assembled.
@@ -46,11 +49,26 @@ public interface ExtensionModule extends Module {
         @Override
         protected void configure() {
             try {
-                install(impl.newInstance());
+                install(impl.getDeclaredConstructor().newInstance());
             } catch (InstantiationException e) {
                 throw (Error) new InstantiationError().initCause(e);
             } catch (IllegalAccessException e) {
                 throw (Error) new IllegalAccessError().initCause(e);
+            } catch (NoSuchMethodException e) {
+                throw (Error) new NoSuchMethodError().initCause(e);
+            } catch (InvocationTargetException e) {
+                Throwable t = e.getCause();
+                if (t instanceof RuntimeException) {
+                    throw (RuntimeException) t;
+                } else if (t instanceof IOException) {
+                    throw new UncheckedIOException((IOException) t);
+                } else if (t instanceof Exception) {
+                    throw new RuntimeException(t);
+                } else if (t instanceof Error) {
+                    throw (Error) t;
+                } else {
+                    throw new Error(e);
+                }
             }
         }
     }

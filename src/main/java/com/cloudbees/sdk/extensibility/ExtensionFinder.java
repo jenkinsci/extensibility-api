@@ -19,7 +19,9 @@ package com.cloudbees.sdk.extensibility;
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -53,7 +55,7 @@ public class ExtensionFinder extends AbstractModule {
                 }
                 for (Class c : Index.list(a.asSubclass(Annotation.class), cl, Class.class)) {
                     if (seen.add(c)) { // ... so that we don't bind the same class twice
-                        for (Class ext : listExtensionPoint(c, new HashSet<Class>())) {
+                        for (Class ext : listExtensionPoint(c, new HashSet<>())) {
                             bind(c, ext);
                         }
                     }
@@ -82,11 +84,26 @@ public class ExtensionFinder extends AbstractModule {
         if (ep != null) {
             if (ep.loader() != ExtensionLoaderModule.Default.class) {
                 try {
-                    return ep.loader().newInstance();
+                    return ep.loader().getDeclaredConstructor().newInstance();
                 } catch (InstantiationException e) {
                     throw (Error) new InstantiationError().initCause(e);
                 } catch (IllegalAccessException e) {
                     throw (Error) new IllegalAccessError().initCause(e);
+                } catch (NoSuchMethodException e) {
+                    throw (Error) new NoSuchMethodError().initCause(e);
+                } catch (InvocationTargetException e) {
+                    Throwable t = e.getCause();
+                    if (t instanceof RuntimeException) {
+                        throw (RuntimeException) t;
+                    } else if (t instanceof IOException) {
+                        throw new UncheckedIOException((IOException) t);
+                    } else if (t instanceof Exception) {
+                        throw new RuntimeException(t);
+                    } else if (t instanceof Error) {
+                        throw (Error) t;
+                    } else {
+                        throw new Error(e);
+                    }
                 }
             }
         }
