@@ -55,8 +55,6 @@ public abstract class PeriodicService implements Startable {
 
     /**
      * Run from the web interface.
-     *
-     * @throws Exception
      */
     public void doRun() throws Exception {
         if (inProgress.compareAndSet(false, true)) {
