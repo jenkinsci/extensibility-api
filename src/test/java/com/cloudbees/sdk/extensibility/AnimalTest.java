@@ -16,7 +16,8 @@
 
 package com.cloudbees.sdk.extensibility;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.collect.Iterables;
 import com.google.inject.Guice;
@@ -24,17 +25,18 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 import jakarta.inject.Inject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Kohsuke Kawaguchi
  */
-public class AnimalTest {
+class AnimalTest {
+
     @Inject
-    ExtensionList<Animal> animals;
+    private ExtensionList<Animal> animals;
 
     @Test
-    public void discovery() {
+    void discovery() {
         Injector i = Guice.createInjector(new ExtensionFinder(getClass().getClassLoader()));
         i.injectMembers(this);
         Animal[] a = Iterables.toArray(animals, Animal.class);
@@ -45,8 +47,8 @@ public class AnimalTest {
      * Make sure we also bind jakarta.inject.Qualifier annotations
      */
     @Test
-    public void jakartaInjectBinding() {
+    void jakartaInjectBinding() {
         Injector i = Guice.createInjector(new ExtensionFinder(getClass().getClassLoader()));
-        assertTrue(i.getInstance(Key.get(Animal.class, Names.named("dog"))) instanceof Dog);
+        assertInstanceOf(Dog.class, i.getInstance(Key.get(Animal.class, Names.named("dog"))));
     }
 }

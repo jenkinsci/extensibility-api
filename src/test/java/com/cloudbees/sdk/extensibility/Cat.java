@@ -24,6 +24,7 @@ import jakarta.inject.Named;
 @Extension
 @Named("cat")
 public class Cat extends Animal {
+
     @Override
     public String bark() {
         return "meow";

@@ -16,18 +16,19 @@
 
 package com.cloudbees.sdk.extensibility;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import jakarta.inject.Named;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Basil Crow
  */
-public class AnnotationLiteralTest {
+class AnnotationLiteralTest {
+
     @Test
-    public void smokes() {
+    void smokes() {
         Named a = AnnotationLiteral.of(Named.class, "cat");
         assertEquals("@jakarta.inject.Named(value=cat)", a.toString());
         assertEquals(Named.class, a.annotationType());
