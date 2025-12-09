@@ -21,5 +21,6 @@ package com.cloudbees.sdk.extensibility;
  */
 @ExtensionPoint
 public abstract class Animal {
+
     public abstract String bark();
 }
